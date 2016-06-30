@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       			http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/data/mongo 
+                http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd">
+
+
+
+    <bean id="noteOne" class="com.mongodb.ServerAddress">
+        <constructor-arg type="java.lang.String" name="host" value="dds-bp1c359e21a920441.mongodb.rds.aliyuncs.com" />
+        <constructor-arg type="int" name="port" value="3717" />
+    </bean>
+
+    <bean id="noteTwo" class="com.mongodb.ServerAddress">
+        <constructor-arg type="java.lang.String" name="host" value="dds-bp1c359e21a920442.mongodb.rds.aliyuncs.com" />
+        <constructor-arg type="int" name="port" value="3717" />
+    </bean>
+
+    <!-- Seeds -->
+    <bean id="mongoSeedList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="noteOne" />
+                <ref bean="noteTwo" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+
+    <bean id="mongoCredential" class="com.mongodb.MongoCredential">
+        <constructor-arg name="mechanism" value = "#{T(com.mongodb.AuthenticationMechanism).SCRAM_SHA_1}" />
+        <constructor-arg type="java.lang.String" name="userName" value="mg_qa_calm_gateway" />
+        <constructor-arg type="java.lang.String" name="source" value="calm_gateway_test" />
+        <constructor-arg type="char[]" name="password" value="elTA5xVD9KiPWfmSesjF" />
+    </bean>
+
+    <!-- Credentials List -->
+    <bean id="mongoCredentialList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="mongoCredential" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- MongoClient -->
+    <bean id="mongoClient" class="com.mongodb.MongoClient">
+        <constructor-arg ref="mongoSeedList" />
+        <constructor-arg ref="mongoCredentialList"  />
+    </bean>
+
+
+
+
+    <!-- MongoDbFactory -->
+    <bean id="simpleMongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+        <constructor-arg ref="mongoClient" />
+        <constructor-arg name="databaseName" value="calm_gateway_test" />
+    </bean>
+
+    <!-- MongoTemplate -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg ref="simpleMongoDbFactory" />
+    </bean>
+
+    <!--<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">-->
+        <!--<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />-->
+        <!--<property name="targetMethod" value="initLogging" />-->
+        <!--<property name="arguments">-->
+            <!--<list>-->
+                <!--<value>classpath:log4j/log4j_test.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+</beans>

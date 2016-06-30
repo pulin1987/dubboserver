@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gateway-core-api
+  profiles:
+    active: ${profile.env},config,datasource,redis,solr
+  cloud:
+    zookeeper:
+      connectString: 192.168.71.128:2181,192.168.71.128:2182,192.168.71.128:2183
+      enabled: true
+      config:
+        enabled: true
+        root: /configurations/on_gateway/${profile.env}
+        defaultContext: apps
+        profileSeparator: ':'
+    config:
+      uri: http://192.168.71.128:8761/
+    eureka:
+      instance:
+        nonSecurePort: 9001
+      client:
+        serviceUrl:
+          defaultZone: http://192.168.71.128:8761/eureka/

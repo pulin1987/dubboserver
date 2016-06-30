@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx 
+	    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+   <!-- failover:(tcp://192.168.71.128:61616,tcp://192.168.71.129:61616) -->
+   <!-- failover:(tcp://10.117.42.187:61616,tcp://10.165.98.102:61616,tcp://10.161.175.124:61616) -->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" lazy-init="true">
+        <property name="brokerURL" value="failover:(tcp://192.168.71.128:61616,tcp://192.168.71.129:61616,tcp://192.168.71.132:61616)"/>
+        <property name="messagePrioritySupported" value="false"/>
+    </bean>
+
+    <bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" >
+        <property name="targetConnectionFactory" ref="connectionFactory"/>
+        <property name="sessionCacheSize" value="10"/>
+    </bean> 
+    
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
+    
+    <bean id="notifyQueue" class="org.apache.activemq.command.ActiveMQQueue" >
+        <constructor-arg value="plly_test"/>
+    </bean>
+    
+    
+ 	<bean id="queueConsumerListener" class="com.pulin.dubboserver.jms.QueueConsumerListener" />
+    
+    <bean id="jmsListenerThreadFactoryBean" class="com.pulin.dubboserver.jms.JmsListenerThreadFactoryBean" />
+    
+     <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer" lazy-init="false">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="notifyQueue"/>
+        <property name="messageListener" ref="queueConsumerListener"/>
+        <property name="concurrentConsumers" value="1"/> 
+        <property name="maxConcurrentConsumers" value="50"/>
+        <property name="concurrency" value="1-50"></property> 
+        <property name="taskExecutor"  ref="jmsListenerThreadFactoryBean"></property>
+    </bean> 
+ 
+    
+</beans>
