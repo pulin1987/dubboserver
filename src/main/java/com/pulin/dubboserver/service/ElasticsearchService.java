@@ -218,7 +218,7 @@ public class ElasticsearchService {
             		.setTypes(type)
             		.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
             		.setQuery(bb1) // Query
-                    .setPostFilter(qb) // Filter
+                    //.setPostFilter(qb) // Filter
                     .setFrom(from)
                     .setSize(size)
                     .addSort(sortBuilder)

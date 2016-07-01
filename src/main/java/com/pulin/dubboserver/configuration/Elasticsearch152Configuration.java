@@ -1,12 +1,11 @@
 package com.pulin.dubboserver.configuration;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,7 @@ import org.springframework.core.env.Environment;
 @Configuration
 @PropertySource(value = "classpath:elasticsearch.properties")
 //@EnableElasticsearchRepositories(basePackages = "com.pulin")
-public class Elasticsearch233Configuration {
+public class Elasticsearch152Configuration {
 	
 	@Autowired(required=false)
 	private Environment environment;
@@ -25,24 +24,16 @@ public class Elasticsearch233Configuration {
 
 	@Bean
 	public Client client() {
-
-		Client client = null;
 		
-/*		try {
-			client = TransportClient.builder().build()
-					 .addTransportAddress(
-							 new InetSocketTransportAddress(
-									 InetAddress.getByName(environment.getProperty("elasticsearch.host")), 
-									 Integer.parseInt(environment.getProperty("elasticsearch.port"))
-													 ));
-			//client.settings().settingsBuilder().put("cluster.name", "xxx");
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}*/
+		TransportClient client = new TransportClient();
+		TransportAddress address = new InetSocketTransportAddress(
+				environment.getProperty("elasticsearch.host"),
+				Integer.parseInt(environment.getProperty("elasticsearch.port"))
+				);
+		client.addTransportAddress(address);
 		
-		
+		//Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "xxx").build();
+        //client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(ipAddress, 9300));
 		
 		return client;
 	}

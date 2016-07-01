@@ -1,6 +1,5 @@
 package dubboserver;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -241,7 +240,7 @@ public class ElasticsearchTest {
 	            		.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 	            		//.setQuery(fullTextQueryBuilder) // Query
 	            		.setQuery(tq)
-	                    .setPostFilter(rangeQueryBuilder) // Filter
+	                   // .setPostFilter(rangeQueryBuilder) // Filter
 	                    .setFrom(from)
 	                    .setSize(size)
 	                    .addSort(sortBuilder)
@@ -294,14 +293,24 @@ public class ElasticsearchTest {
 	    
 	public static Client client() {
 
-		Client client = null;
+		//Client client = null;
+		
+		TransportClient client = null;
+		
+		
 		try {
-			client = TransportClient.builder().build()
+			client = new TransportClient();
+			TransportAddress address = new InetSocketTransportAddress(
+					"192.168.71.128",
+					9300
+					);
+			client.addTransportAddress(address);
+			
+			/*client = TransportClient.builder().build()
 					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.71.128"), 9300));
 			// client.settings().settingsBuilder().put("cluster.name", "xxx");
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (UnknownHostException e) {
+*/			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
