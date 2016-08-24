@@ -13,6 +13,7 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -70,6 +71,10 @@ public class ElasticsearchService {
     public  void delDocument(String index, String type, String id) {
     	 DeleteResponse response = client.prepareDelete(index, type, id).get();
     }
+    
+    public  void delIndex(String index, String type) {
+   	 IndexRequestBuilder response = client.prepareIndex(index, type);
+   }
     
 
     /**

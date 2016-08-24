@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Component
+//@Component
 @Slf4j
 public class ZookeeperPropertiesService {
 	
@@ -23,7 +23,7 @@ public class ZookeeperPropertiesService {
 	
 	 Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
-	    @Autowired
+	    @Autowired(required=false)
 	    private CuratorFramework client;
 
 	    @Value("${spring.application.name}")

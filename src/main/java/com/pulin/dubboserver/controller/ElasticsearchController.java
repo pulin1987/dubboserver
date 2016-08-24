@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,20 @@ public class ElasticsearchController {
 	public String test() throws DaoException {
 		add();
 		return "add:"+System.currentTimeMillis();
+	}
+	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public String deleteIndex(HttpServletRequest request) throws DaoException {
+		String index = request.getParameter("index");
+		String type = request.getParameter("type");
+		if(StringUtils.isNoneBlank(index) && StringUtils.isNoneBlank(type)){
+			elasticsearchService.delIndex(index,type);
+		}else{
+			elasticsearchService.delIndex("commercial","commercial");
+		}
+		
+		return "delete:"+System.currentTimeMillis();
 	}
 	
 	@RequestMapping(value="/query",method=RequestMethod.GET, produces="text/plain;charset=UTF-8")

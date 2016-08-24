@@ -5,16 +5,18 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.boot.bind.RelaxedNames;
 
 public class Test {
 	
 	public static void main(String[] args) throws IOException {
+		Long s = 1468995011*1000L;
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(s)));
+		
 	/*	String s = org.apache.commons.io.FileUtils.readFileToString(new File("D:/test.txt"));
 		System.out.println(s);
 		Map<String,String> param = new HashMap<String,String>();
@@ -53,13 +55,16 @@ public class Test {
 		String bb = URLEncoder.encode(b,"gbk");
 		System.out.println(bb);
 		//bb="abcdef%25%25";
-		System.out.println(URLDecoder.decode(bb,"gbk"));
+		bb="%E6%82%A8%E6%AD%A3%E5%9C%A8%E3%80%90Let%27s+Pizza%E3%80%91%E6%88%90%E5%8A%9F%E5%BC%80%E9%80%9A%E4%BC%9A%E5%91%98%EF%BC%8C%E8%B4%A6%E6%88%B7%E5%AF%86%E7%A0%81%E4%B8%BA%E3%80%90201314%E3%80%91%EF%BC%8C%E8%AF%B7%E5%A6%A5%E5%96%84%E4%BF%9D%E5%AD%98%E3%80%82";
+		System.out.println(URLDecoder.decode(bb,"utf-8"));
 		
 		
 		/*long s = 22577000L;
 		System.out.println(s/1000/60/60);
 		
 		tt();*/
+		
+		
 	}
 	
 	public static void tt(){

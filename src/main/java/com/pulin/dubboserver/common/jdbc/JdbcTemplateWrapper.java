@@ -26,7 +26,7 @@ public class JdbcTemplateWrapper<T,PK> {
 	
 	private static Logger logger = LoggerFactory.getLogger(JdbcTemplateWrapper.class);
 	
-	@Autowired
+	@Autowired(required=false)
 	protected JdbcTemplate jdbcTemplate;
 	
 	private Class<T> clazz;

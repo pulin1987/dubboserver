@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
        //,RedisAutoConfiguration.class
         })
 @ComponentScan("com.pulin") // 组件扫描
-@EnableDiscoveryClient
-@EnableEurekaClient
+//@EnableDiscoveryClient
+//@EnableEurekaClient
 @ImportResource(value = {"classpath:application-boot-start.xml"}) // 导入配置文件
 @Slf4j
 public class WebRun {
